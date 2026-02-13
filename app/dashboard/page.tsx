@@ -30,11 +30,15 @@ export default function DashboardPage() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-8">
           <a href="/dashboard/workflows" className="block p-4 border rounded-lg hover:bg-blue-50 transition">
             <h3 className="font-medium">Workflow Management</h3>
-            <p className="text-sm text-gray-500">Create and manage AI workflows</p>
+            <p className="text-sm text-gray-500">View and manage AI workflows</p>
           </a>
           <a href="/dashboard/workflows/[id]" className="block p-4 border rounded-lg hover:bg-blue-50 transition">
-            <h3 className="font-medium">Workflow Details</h3>
-            <p className="text-sm text-gray-500">View and edit specific workflow</p>
+            <h3 className="font-medium">Workflow Designer</h3>
+            <p className="text-sm text-gray-500">Visual workflow builder and editor</p>
+          </a>
+          <a href="/dashboard/runs" className="block p-4 border rounded-lg hover:bg-blue-50 transition">
+            <h3 className="font-medium">Workflow Executions</h3>
+            <p className="text-sm text-gray-500">Monitor workflow run history</p>
           </a>
         <a href="/dashboard/settings" className="block p-4 border rounded-lg hover:bg-blue-50 transition">
           <h3 className="font-medium">Settings</h3>

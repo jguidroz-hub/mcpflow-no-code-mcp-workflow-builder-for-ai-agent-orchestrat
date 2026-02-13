@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 
-interface WorkflowsItem {
+interface RunsItem {
   id: string;
   title?: string;
   status?: string;
@@ -10,14 +10,14 @@ interface WorkflowsItem {
   [key: string]: any;
 }
 
-export default function WorkflowsPage() {
-  const [items, setItems] = useState<WorkflowsItem[]>([]);
+export default function RunsPage() {
+  const [items, setItems] = useState<RunsItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [showCreate, setShowCreate] = useState(false);
   const [newTitle, setNewTitle] = useState('');
 
   useEffect(() => {
-    fetch('/api/workflows')
+    fetch('/api/runs')
       .then(r => r.json())
       .then(data => { setItems(data.items || []); setLoading(false); })
       .catch(() => setLoading(false));
@@ -25,7 +25,7 @@ export default function WorkflowsPage() {
 
   const handleCreate = async () => {
     if (!newTitle.trim()) return;
-    const res = await fetch('/api/workflows', {
+    const res = await fetch('/api/runs', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ title: newTitle }),
@@ -39,7 +39,7 @@ export default function WorkflowsPage() {
   };
 
   const handleDelete = async (id: string) => {
-    await fetch(`/api/workflows/${id}`, { method: 'DELETE' });
+    await fetch(`/api/runs/${id}`, { method: 'DELETE' });
     setItems(prev => prev.filter(i => i.id !== id));
   };
 
@@ -52,7 +52,7 @@ export default function WorkflowsPage() {
   return (
     <div className="max-w-4xl mx-auto p-6">
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold">Workflow Management</h1>
+        <h1 className="text-2xl font-bold">Workflow Executions</h1>
         <button
           onClick={() => setShowCreate(!showCreate)}
           className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
@@ -61,7 +61,7 @@ export default function WorkflowsPage() {
         </button>
       </div>
 
-      <p className="text-gray-600 mb-6">View and manage AI workflows</p>
+      <p className="text-gray-600 mb-6">Monitor workflow run history</p>
 
       {showCreate && (
         <div className="mb-6 p-4 border rounded-lg bg-gray-50">

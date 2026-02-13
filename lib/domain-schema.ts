@@ -25,27 +25,36 @@ export const auditLog = pgTable('audit_log', {
   createdAt: timestamp('created_at').notNull().default(sql`now()`),
 });
 
-// No-code AI workflow definitions
+// Core workflow configurations for MCP agent orchestration
 export const workflows = pgTable('workflows', {
-  id: text('id').primaryKey(),
-  userId: text('user_id').references(() => users.id, { onDelete: 'cascade' }),
+  id: text('id').primaryKey().notNull(),
+  userId: text('user_id').notNull().references(() => users.id, { onDelete: 'cascade' }),
   name: text('name').notNull(),
   description: text('description'),
-  workflowJson: jsonb('workflow_json').notNull(),
+  configuration: jsonb('configuration').notNull(),
   isActive: boolean('is_active').default(true),
   createdAt: timestamp('created_at').notNull(),
   updatedAt: timestamp('updated_at').notNull(),
 });
 
-// Tracked workflow execution logs
-export const workflowExecutions = pgTable('workflow_executions', {
-  id: text('id').primaryKey(),
-  userId: text('user_id').references(() => users.id, { onDelete: 'cascade' }),
-  workflowId: text('workflow_id').references(() => workflows.id, { onDelete: 'cascade' }),
+// Tracking individual workflow execution instances
+export const workflowRuns = pgTable('workflow_runs', {
+  id: text('id').primaryKey().notNull(),
+  userId: text('user_id').notNull().references(() => users.id, { onDelete: 'cascade' }),
+  workflowId: text('workflow_id').notNull().references(() => workflows.id, { onDelete: 'cascade' }),
   status: text('status').notNull(),
-  inputData: jsonb('input_data'),
-  outputData: jsonb('output_data'),
-  executionTime: text('execution_time'),
+  executionLogs: jsonb('execution_logs'),
   createdAt: timestamp('created_at').notNull(),
-  updatedAt: timestamp('updated_at').notNull(),
+  completedAt: timestamp('completed_at'),
+});
+
+// Pre-configured workflow templates for quick start
+export const templateWorkflows = pgTable('template_workflows', {
+  id: text('id').primaryKey().notNull(),
+  name: text('name').notNull(),
+  description: text('description').notNull(),
+  configuration: jsonb('configuration').notNull(),
+  category: text('category').notNull(),
+  complexity: text('complexity').notNull(),
+  createdAt: timestamp('created_at').notNull(),
 });
